@@ -12,7 +12,7 @@ import java.nio.file.Files;
 public class RequestHandler extends Thread {
 	private static final String DOCUMENT_ROOT = "./webapp";
 	private Socket socket;
-	
+	//
 	public RequestHandler( Socket socket ) {
 		this.socket = socket;
 	}
