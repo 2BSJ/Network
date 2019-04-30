@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class TCPServer {
 
@@ -16,6 +17,9 @@ public class TCPServer {
 			// 1. 서버소켓 생성
 			serverSocket = new ServerSocket();
 
+			
+			//1-1 Time-Wait 시간에 소켓에 해당 포트번호 할당을 가능하게 하기 위함
+			serverSocket.setReuseAddress(true);
 			// 2. 주소바인딩
 			// : Socket에 SocketAddress(IPAddress + Port) 를 바인딩한다.
 
@@ -55,12 +59,20 @@ public class TCPServer {
 					//그렇기 떄문에 하나를 연결하고 나서 다른 클라로 연결하려면 연결이 안된다.
 					if(readByteCount == -1) {
 						//정상종료( close() 메소드 호출 하고 끊은경우)
+						//close() 메서드가 호출되면 4번의 클라이언트와 서버간의 패킷교환이 일어나는데
+						//이런 교환이 일어나야 우아한 종료가 된다.
 						System.out.println("[server] closed by client");
 					}
 					String data = new String(buffer, 0,readByteCount,"utf-8");
 					System.out.println("[server] received:" + data);
 					
 					//6.데이터  쓰기
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					os.write(data.getBytes("utf-8"));
 				}
 
@@ -71,6 +83,10 @@ public class TCPServer {
 				try {
 					if(socket != null && socket.isClosed() == false )
 						socket.close();
+				}
+				catch(SocketException e)
+				{
+					System.out.println("[server] sudden closed by client");
 				}
 				catch(IOException e) {
 					e.printStackTrace();

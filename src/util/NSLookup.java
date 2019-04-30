@@ -26,7 +26,7 @@ public class NSLookup {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		if(hostname.equals("quit"))
+		if("quit".equals(hostname))
 		{
 			System.out.println("exit the program");
 			break;
