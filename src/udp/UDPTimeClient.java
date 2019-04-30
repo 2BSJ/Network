@@ -14,6 +14,7 @@ public class UDPTimeClient {
 		// TODO Auto-generated method stub
 
 		DatagramSocket serverSocket = null;
+		//
 		//public final void main -> 메소드를 오버라이드 하지 말라는의미 
 		//메인함수를 쓰는곳이 여기가 끝이라는거
 
