@@ -11,6 +11,7 @@ public class UDPEchoServer {
 	public static void main(String[] args) {
 		DatagramSocket socket = null;
 		
+		
 		try {
 			//1. socket 생성
 			socket = new DatagramSocket(PORT);
