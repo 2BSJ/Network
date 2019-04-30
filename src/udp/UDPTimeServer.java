@@ -14,16 +14,19 @@ public class UDPTimeServer {
 	public static final int BUFFER_SIZE = 1024;
 	public static void main(String[] args) {
 		DatagramSocket socket = null;
-//		DatagramPacket sendPacket = null;
+		DatagramPacket sendPacket = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd(E) HH:mm:ss a");
 		Calendar cal = Calendar.getInstance();
+		/*
 		int YEAR = cal.get(Calendar.YEAR);
-		int MONTH = cal.get(Calendar.MONTH);
+		int MONTH = cal.get(Calendar.MONTH)+1;
 		int DATE = cal.get(Calendar.DATE);
 		int HOUR = cal.get(Calendar.HOUR);
 		int MINUTE = cal.get(Calendar.MINUTE);
 		int SECOND = cal.get(Calendar.SECOND);
 		String time = YEAR+"-"+MONTH+"-"+DATE+" "+HOUR+":"+MINUTE+":"+SECOND;
-		
+		//일일히 할 필요없이 simpledateformat 객체 만들고 양식 적어논다음 date객체 넣기만하면 쉽게 생성
+		*/
 		
 		try {
 			//1. socket 생성
@@ -40,11 +43,11 @@ public class UDPTimeServer {
 				String message = new String(data, 0, length, "utf-8");
 				//클라이언트에서 요청메세지인 ""이 들어오면 데이터 전송을 시간으로 해줌
 				if(message.equals("")) {
-					
+					String time1=sdf.format(cal.getTime());
 					//3-1 요청들어왔을때 타임 전송
 					System.out.println("[server] requested time");
-					byte[] sendTime = time.getBytes("utf-8");
-					DatagramPacket sendPacket = new DatagramPacket(sendTime, sendTime.length,receivePacket.getAddress(),receivePacket.getPort());
+					byte[] sendTime1 = time1.getBytes("utf-8");
+					sendPacket = new DatagramPacket(sendTime1, sendTime1.length,receivePacket.getAddress(),receivePacket.getPort());
 					socket.send(sendPacket);
 				}
 				else {
@@ -52,7 +55,7 @@ public class UDPTimeServer {
 					System.out.println("[server] received:" + message);
 					//3. 데이터 전송
 					byte[] sendData = message.getBytes("utf-8");
-					DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
+					sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
 					socket.send(sendPacket);
 				}
 			}
