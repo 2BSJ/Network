@@ -13,16 +13,9 @@ import java.nio.file.Files;
 public class RequestHandler extends Thread {
 	private static String documentRoot = "";
 	
-	static {
-		try {
-			documentRoot = new File(RequestHandler.class.
-					getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
-			documentRoot +="/webapp";
-			System.out.println("----->" + documentRoot);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	static {			
+			documentRoot = RequestHandler.class.getClass().getResource("/webapp")
+					.getPath();
 	}
 	private Socket socket;
 	//
